@@ -188,7 +188,7 @@ var contractInstance = MyContract.new(
  - This function cannot have arguments nor can it return anything 
  - Executed when none of the other functions matches the given funciton identifier or if no data was supplied at all
  - Also executed if the the contract receives just Ether
- - Very little gas available to the fallback function (2300 gas) so ned to be simple
+ - Very little gas available to the fallback function (2300 gas) so need to be simple
  - Specific functions that will consume more gas than the fallback function is given:
      - Writing to storage
      - Creating a contract
@@ -246,6 +246,31 @@ contract Consumer {
  - This is to prevent vulnerability to a reentry exploit
 
 ####Named Calls and Anonymous Function Parameters####
+
+ - Function call arguments can also be given by name if they are enclosed with `{}` 
+ - Argument list has to coincide by name with the list of parameters from the function declaration, but it can be in any order
+
+###Creating Contracts via `new`###
+
+ - A contract can create a new contract using the `new` keyword
+ - The full code of the contract being created must be known
+
+###Assignment###
+####Destructuring Assignments and Returning Multiple Values####
+
+ - Solidity allows tuple types that can be used to return multiple values at the same time
+ - It is also allowed for these tuples to have multiple variables assigned to them at the same time as well
+
+####Complications for Arrays and Structs####
+
+ - Assigning *to* a state variable always creates an independent copy
+ - Assigning to a local variable creates an independent copy only for elementary types
+ - If structs or arrays are assigned from a state variable to a local variable, the local variable holds a reference to the
+   original state variable
+    - A second assignment to the local variable will not change the state, but will change the reference
+    - Assignment to members of the local variable *do* change the state
+
+###Scoping and Declerations###
 
 
 ***
