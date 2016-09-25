@@ -207,7 +207,7 @@ Idea is to create one contract per ballot, providing a short name for each optio
 
 At the end of the voting, the `winningProposal()` will return the proposal with the largest number of votes.
 
-```
+```javascript
 // From the voting example, winningProposal() extract
 
 function winningProposal() constant
@@ -221,3 +221,42 @@ function winningProposal() constant
 		}
 	}
 }
+
+###Open Auction###
+
+Idea is to create a contract that everyone can send their bids during a bidding period where the bids include sending
+money/ether to bind the bidders to their bids. Should the highest bid be raised, the previously highest bidder gets their money
+back. Once the bidding period ends, the contracts has to be called manually for the beneficiary to receive their money.
+
+```javascript
+// From the open Auction example 
+
+function auctionEnd() {
+
+	// 1. Conditions
+	if (now <= auctionStart + biddingTime)
+		throw; // auction did not yet end
+	if (ended)
+		throw; // this function has already been called
+	
+	// 2. Effects
+	ended = true;
+	AuctionEnded(highestBider, highestBid);
+
+	// 3. Interaction
+	if (!beneficiary.send(highestBid))
+		throw;
+}
+```
+
+Good idea to structure functions that interact with other contracts into three phases:
+
+ 1. Checking conditions
+ 2. Performing actions (potentially changing conditions)
+ 3. Interacting with other contracts
+
+The danger is that if these steps are mixed up, the other contract could call back into the current contract and modify the
+state or cause effects (e.g. Ether payout) to be performed multiple times.
+
+If functions called internally include interaction with external contracts, they also have to be considered interaction with
+external contracts
