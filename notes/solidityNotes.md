@@ -221,6 +221,7 @@ function winningProposal() constant
 		}
 	}
 }
+```
 
 ###Open Auction###
 
