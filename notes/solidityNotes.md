@@ -196,7 +196,59 @@ var contractInstance = MyContract.new(
      - Sending Ether
 
 ***
+##Expressions and Control Strucutres##
+###Control Structures###
 
+ - Most usual control structures from C/Javascript are available in Solidity except for `switch` and `goto`
+ - Note that there is **no** type conversion from non-boolean to boolean types like in C or Javascript
+    - e.g. `if (1) { ... }` is *not* valid in Solidity
+
+###Function Calls###
+####Internal Function Calls####
+
+ - Functions of the current contract are able to be called directly (i.e. *internally*) as well as recursively
+ - Within the EVM, these calls are transalted into simple jumps
+     - This has the impact that current memory is not cleared - passing memory references to internally-called functions is very
+       efficient
+ - Only functions of the same contract can be called internally
+
+####External Function Calls####
+
+ - External function calls (i.e. calling functions of one contract from another contract) are done via *messages* instead of a
+   direct jump
+ - For an external call, all the arguments of the function must be passed into memory
+ - The gas and amount of Wei sent with an external call can be specified:
+
+```javascript
+contract InfoFeed {
+	function info() payable returns (uint ret) { return 42; }
+}
+
+contract Consumer {
+	InfoFeed feed;
+	function setFeed(address addr) { feed = InfoFeed(addr); }
+	funciton callFeed() { feed.info.value(10).gas(800); } // Specifying the Wei and gas sent when calling InfoFeed
+}
+```
+
+ - Note that in the above example, the modifier `payable` has to be used for `info` as otherwise it would not be possible to
+   send Ether to it so as to call `feed.info.value(10).gas(800)()`.
+ - Note also that `InfoFeed(addr)` performs an **explicit** type converstion that states "we know that the contract type being
+   passed at the given address is `InfoFeed`" and that this contract does not execute a constructor
+    - Never call a function on a contract when you are unsure about its type
+ - Function calls cause exceptions if the contract being called does not exist (i.e. has no code)
+ - Will also throw an exception if the contract itself throws an exception or runs out of gas
+
+**Warning**
+
+ - Interaction with other contracts always impose a danger due to loss of control
+ - Write functions such that calls to external functions happen after any changes to state variables 
+ - This is to prevent vulnerability to a reentry exploit
+
+####Named Calls and Anonymous Function Parameters####
+
+
+***
 ##Code Samples##
 
 ###Voting Contract###
