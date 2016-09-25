@@ -1,5 +1,3 @@
-Solidity
----------
 #Notes on Solidity#
 
 ##Layout of a Solidity Source File##
