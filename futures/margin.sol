@@ -48,7 +48,7 @@ contract Margin {
     /// Increase the amount of Ether held by the margin account 
     /// note that this is a cumulative action, hence calling this 
     /// will continually increase the margin
-    function addMargin() payable {
+    function deposit() payable {
         // No need for arguments, as the amount to add is part of the transaction
         // the keyword payable is required for the function to be allowed 
         // to receive Ether
@@ -66,5 +66,4 @@ contract Margin {
         // Log the increase
         MarginIncrease(msg.sender, msg.value);
     }
-
 
