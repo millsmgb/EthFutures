@@ -78,6 +78,31 @@ contract Margin {
             return true;
         }
     }
+    /// End the margin account due expiry of future contract
+    function closeMargin() {
+        // 1. Checking conditions
+        if (now <= futureEnd)
+            throw; // margin being closed too early
+        if (ended)
+            throw; // margin already closed
 
-    // Close the margin account either due to the Future contract ending or 
-    // due to the margin being liquidaed as a result of 
+        // 2. Effects
+        ended = true;
+        FutureClosed(marginAmount);
+
+        // 3. Interaction
+        if (!owner.send(marginAmount))
+            throw;
+    }
+
+    /// Forced liquidation of the margin account due to a margin call
+    function liquidateMargin() {
+        if (ended)
+            throw;
+        ended = true;
+        FutureClosed(marginAmount);
+
+        if (!futureContract.send(marginAmount))
+            throw;
+    }
+}
