@@ -66,4 +66,18 @@ contract Margin {
         // Log the increase
         MarginIncrease(msg.sender, msg.value);
     }
+    
+    // Withdraw from the margin account 
+    // Need to account for the liquidity minimums as well as how to do margin calls
+    function withdraw() returns (bool) {
+        var amount = msg.sender;
+        if (amount > 0) {
+            if (!msg.sender.send(amount)) {
+                return false;
+            }
+            return true;
+        }
+    }
 
+    // Close the margin account either due to the Future contract ending or 
+    // due to the margin being liquidaed as a result of 
