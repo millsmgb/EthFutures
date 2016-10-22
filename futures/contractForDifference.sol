@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+
 
 /*
  * A contract for difference is a contract where the difference in value is paid 

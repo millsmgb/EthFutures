@@ -5,7 +5,7 @@
  */
 
 // Import the Oraclize API
-import "dev.oraclize.it/api.sol"
+import "dev.oraclize.it/api.sol";
 
 contract ETHUSDPriceTicker is usingOraclize {
 

@@ -28,12 +28,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+pragma solidity ^0.4.0;
+
 contract OraclizeI {
     address public cbAddress;
-    function query(uint _timestamp, string _datasource, string _arg) returns (bytes32 _id);
-    function query_withGasLimit(uint _timestamp, string _datasource, string _arg, uint _gaslimit) returns (bytes32 _id);
-    function query2(uint _timestamp, string _datasource, string _arg1, string _arg2) returns (bytes32 _id);
-    function query2_withGasLimit(uint _timestamp, string _datasource, string _arg1, string _arg2, uint _gaslimit) returns (bytes32 _id);
+    function query(uint _timestamp, string _datasource, string _arg) payable returns (bytes32 _id);
+    function query_withGasLimit(uint _timestamp, string _datasource, string _arg, uint _gaslimit) payable returns (bytes32 _id);
+    function query2(uint _timestamp, string _datasource, string _arg1, string _arg2) payable returns (bytes32 _id);
+    function query2_withGasLimit(uint _timestamp, string _datasource, string _arg1, string _arg2, uint _gaslimit) payable returns (bytes32 _id);
     function getPrice(string _datasource) returns (uint _dsprice);
     function getPrice(string _datasource, uint gaslimit) returns (uint _dsprice);
     function useCoupon(string _coupon);
@@ -62,12 +64,12 @@ contract usingOraclize {
     modifier oraclizeAPI {
         if(address(OAR)==0) oraclize_setNetwork(networkID_auto);
         oraclize = OraclizeI(OAR.getAddress());
-        _
-    }//please import oraclizeAPI_0.4.sol when solidity >= 0.4.0
+        _;
+    }
     modifier coupon(string code){
         oraclize = OraclizeI(OAR.getAddress());
         oraclize.useCoupon(code);
-        _
+        _;
     }
 
     function oraclize_setNetwork(uint8 networkID) internal returns(bool){
