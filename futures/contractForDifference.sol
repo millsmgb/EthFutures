@@ -8,7 +8,6 @@ pragma solidity ^0.4.0;
  * value of the underlying security increases, A must pay B the difference and vice-versa
  */
 
-import "marginTwo.sol";
 import "priceTickerETHUSD.sol";
 
 contract ContractForDifference {
@@ -29,7 +28,7 @@ contract ContractForDifference {
     ETHUSDPriceTicker public oracleETHUSD;
 
     // Check if terminated
-    bool isTerminated public;
+    bool public isTerminated;
     // Events to indicate that the CFD has been marked
     event CFDMarkShort(uint amount);
     event CFDMarkLong(uint amount);
@@ -106,3 +105,4 @@ contract ContractForDifference {
     function () {
         throw;
     }
+}
