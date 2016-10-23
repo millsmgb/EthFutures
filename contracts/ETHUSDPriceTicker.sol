@@ -3,9 +3,9 @@
  * found on the Oraclize documentation
  * https://github.com/oraclize/ethereum-examples/solidity/KrakenPriceTicker.sol
  */
-
+pragma solidity ^0.4.0;
 // Import the Oraclize API
-import "usingOraclize.sol";
+import "oraclizeAPI.sol";
 
 contract ETHUSDPriceTicker is usingOraclize {
 

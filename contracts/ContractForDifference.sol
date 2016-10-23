@@ -1,4 +1,4 @@
-
+pragma solidity ^0.4.0;
 
 /*
  * A contract for difference is a contract where the difference in value is paid 
@@ -35,6 +35,8 @@ contract ContractForDifference {
     event updatedMargin(address accountAddress, uint amount);
     
     function ContractForDifference() {
+        // Check that the owner exists
+        
         owner = msg.sender;
         margins.push(owner); 
         oracleETHUSD = new ETHUSDPriceTicker();
@@ -61,7 +63,7 @@ contract ContractForDifference {
             balances[msg.sender] -= withdrawAmount;
             
             if (!msg.sender.send(withdrawAmount)) {
-                balances[msg.sender] += withdrawAmount;
+                throw; // Roll back state in case of issue arising
             }
         }
 
